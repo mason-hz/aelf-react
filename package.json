@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "name": "aelf-react",
+  "engines": {
+    "node": "^14 || ^16"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean --yes",
+    "lint": "yarn run eslint --ext .ts,.tsx .",
+    "test": "jest",
+    "build": "lerna run build",
+    "prestart": "yarn build",
+    "start": "lerna run start --parallel",
+    "pin": "lerna run pin && yarn bootstrap",
+    "prepack": "yarn build"
+  },
+  "devDependencies": {
+    "@testing-library/react-hooks": "^8.0.0",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.24",
+    "@types/react": "^18.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-tsdoc": "^0.2.16",
+    "eth-provider": "^0.9.4",
+    "jest": "^27.5.1",
+    "lerna": "^4.0.0",
+    "prettier": "^2.7.1",
+    "react": "^18.0.0",
+    "react-test-renderer": "^18.0.0",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3"
+  },
+  "version": "0.1.0"
+}
