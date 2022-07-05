@@ -94,7 +94,7 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
   );
 }
 
-export function useAElfReact(): AElfContextType {
+export function useAElfReact() {
   const context = useContext(AElfContext);
   if (!context) throw Error('useAElfReact can only be used within the AElfReactProvider component');
   return context;
