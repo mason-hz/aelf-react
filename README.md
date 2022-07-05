@@ -140,37 +140,13 @@ function Component() {
 aelf-bridge only supports one node and needs to check whether it is connected, NIGHT ELF supports multiple. If your application needs to use aelf-bridge you can usually do this.
 
 ```javascript
-import { AElfDappBridge } from '@aelf-react/types';
-let endpoint = '';
-
-export function isAElfBridge(aelfBridge: AElfDappBridge) {
-  return !!(aelfBridge.options && aelfBridge.connect);
-}
-export function isCurrentAElfBridge(aelfBridge: AElfDappBridge) {
-  return endpoint === aelfBridge.options?.endpoint;
-}
-
-export async function reConnectAElfBridge(aelfBridge: AElfDappBridge) {
-  const isConnected = await aelfBridge.connect?.();
-  if (!isConnected) throw Error('Reconnects Fails');
-  endpoint = aelfBridge.options?.endpoint || '';
-}
-
 export async function checkAElfBridge(aelfBridge: AElfDappBridge) {
-  const isBridge = isAElfBridge(aelfBridge);
-  const isCurrent = isCurrentAElfBridge(aelfBridge);
-  if (isBridge && !isCurrent) {
+  if (isAElfBridge(aelfBridge) && !isCurrentAElfBridge(aelfBridge)) {
     await reConnectAElfBridge(aelfBridge);
   }
 }
-
-async function request() {
-  await checkAElfBridge(defaultAElfBridge);
-  const req = await defaultAElfBridge.chain.getBlockHeight();
-  // aelf-bridge returns the result directly NIGHT ELF will return the result in the result
-  console.log(req.result || req);
-}
 ```
+The full example, head over to the [example/ utils](./example/src/utils.ts).
 
 ### Example of use
 
