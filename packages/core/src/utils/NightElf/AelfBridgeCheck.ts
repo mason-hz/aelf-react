@@ -1,12 +1,12 @@
 import AElfBridge from 'aelf-bridge';
+import { ErrorExtension } from './types';
 
-let aelfBridgeInstance = null;
+let aelfBridgeInstance: AelfBridgeCheck = null;
 let aelfInstanceByBridge = null;
 
 let accountInfo = null;
-
 export default class AelfBridgeCheck {
-  check: Promise<unknown>;
+  check: Promise<boolean | ErrorExtension>;
   constructor() {
     this.check = new Promise((resolve, reject) => {
       const bridgeInstance = new AElfBridge({
@@ -31,10 +31,8 @@ export default class AelfBridgeCheck {
     });
   }
   static getInstance() {
-    if (!aelfBridgeInstance) {
-      aelfBridgeInstance = new AelfBridgeCheck();
-      return aelfBridgeInstance;
-    }
+    if (aelfBridgeInstance) return aelfBridgeInstance;
+    aelfBridgeInstance = new AelfBridgeCheck();
     return aelfBridgeInstance;
   }
 

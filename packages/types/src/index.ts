@@ -135,9 +135,9 @@ export interface AElfDappBridge {
     options: LoginOptions,
     ...args: unknown[]
   ) => Promise<{
-    error: any;
+    error: string | number;
     errorMessage: {
-      message: any;
+      message: string | Error;
     };
     detail: string;
   }>;

@@ -20,29 +20,41 @@ At a high level, `aelf-react` is a state machine which ensures that certain key 
 The data conforms to the following interface:
 
 ```typescript
-interface AElfContextType = {
-  accountName?: string;
+export interface AElfContextState {
+  name?: string;
   chainId?: string;
   account?: AElfAddress;
   defaultAElfBridge?: AElfDappBridge;
   aelfBridges?: { [key: string]: AElfDappBridge };
-  isActive: boolean;
+  nodes?: AElfReactProviderProps['nodes'];
   pubKey?: string;
   publicKey?: PublicKey;
+  // is connected
+  isActive: boolean;
+}
+
+export interface AElfContextType extends AElfContextState {
+  /**
+   * The activate connection can optionally pass in a new node
+   * @param nodes - @see AElfReactProviderProps.nodes
+   */
   activate: (nodes?: AElfReactProviderProps['nodes']) => Promise<true | any>;
+  // deactivate connection
   deactivate: () => Promise<true | any>;
-  nodes?: AElfReactProviderProps['nodes'];
 }
 ```
 
 ## Install
 
-- Grab a fresh copy of `react@>=16.8`...\
-  `yarn add react`
+`react @>= 16.8`
 
-- ...and then install `aelf-react`\
-  `yarn add @aelf-react/core`
+```bash
+yarn add @aelf-react/core
 
+# OR
+
+npm install --save @aelf-react/core
+```
 ## `aelf-react@core` API Reference
 
 ### AElfReactProvider
@@ -52,19 +64,21 @@ interface AElfContextType = {
 #### Props
 
 ```typescript
+export type AelfNode = {
+  rpcUrl: string;
+  chainId: string;
+};
+
 /**
+ * @param children - A React subtree that needs access to the context.
  * @param appName - App name.
- * @param nodes - node object. @example `nodes = {
-        tDVV: { rpcUrl: 'https://tdvv-test-node.aelf.io', chainId: 'tDVV' }
-    }`
+ * @param nodes - node object. @example `nodes = {AELF: {rpcUrl:'xxx', chainId:"AELF"}, tDVV: {rpcUrl:'xxx', chainId:"tDVV"}}`
  */
-interface AElfReactProviderProps {
+export interface AElfReactProviderProps {
+  children: ReactNode;
   appName: string;
   nodes?: {
-    [key: string]: {
-      rpcUrl: string;
-      chainId: string;
-    };
+    [key: string]: AelfNode;
   };
 }
 ```
@@ -126,20 +140,32 @@ function Component() {
 aelf-bridge only supports one node and needs to check whether it is connected, NIGHT ELF supports multiple. If your application needs to use aelf-bridge you can usually do this.
 
 ```javascript
+import { AElfDappBridge } from '@aelf-react/types';
 let endpoint = '';
-async function checkAElfBridgeConnected(aelfBridge: AElfDappBridge) {
-  /**
-   * options & connect is aelf-bridge only
-   * aelf-bridge only supports one node and needs to check whether it is connected
-   */
-  if (aelfBridge.options && aelfBridge.connect && endpoint !== aelfBridge.options.endpoint) {
-    await aelfBridge.connect?.();
-    endpoint = aelfBridge.options.endpoint;
+
+export function isAElfBridge(aelfBridge: AElfDappBridge) {
+  return !!(aelfBridge.options && aelfBridge.connect);
+}
+export function isCurrentAElfBridge(aelfBridge: AElfDappBridge) {
+  return endpoint === aelfBridge.options?.endpoint;
+}
+
+export async function reConnectAElfBridge(aelfBridge: AElfDappBridge) {
+  const isConnected = await aelfBridge.connect?.();
+  if (!isConnected) throw Error('Reconnects Fails');
+  endpoint = aelfBridge.options?.endpoint || '';
+}
+
+export async function checkAElfBridge(aelfBridge: AElfDappBridge) {
+  const isBridge = isAElfBridge(aelfBridge);
+  const isCurrent = isCurrentAElfBridge(aelfBridge);
+  if (isBridge && !isCurrent) {
+    await reConnectAElfBridge(aelfBridge);
   }
 }
 
 async function request() {
-  await checkAElfBridgeConnected(defaultAElfBridge);
+  await checkAElfBridge(defaultAElfBridge);
   const req = await defaultAElfBridge.chain.getBlockHeight();
   // aelf-bridge returns the result directly NIGHT ELF will return the result in the result
   console.log(req.result || req);

@@ -1,20 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AElfReactProvider, getSignatureByBridge, useAElfReact } from '@aelf-react/core';
-import { AElfDappBridge } from '@aelf-react/types';
 import AElf from 'aelf-sdk';
 import './index.css';
-let endpoint = '';
-async function checkAElfBridgeConnected(aelfBridge: AElfDappBridge) {
-  /**
-   * options & connect is aelf-bridge only
-   * aelf-bridge only supports one node and needs to check whether it is connected
-   */
-  if (aelfBridge.options && aelfBridge.connect && endpoint !== aelfBridge.options.endpoint) {
-    await aelfBridge.connect?.();
-    endpoint = aelfBridge.options.endpoint;
-  }
-}
+import { checkAElfBridge } from './utils';
 
 function App() {
   // defaultAElfBridge is the first node, which is tDVV
@@ -54,9 +43,9 @@ function App() {
           try {
             // aelf-bridge only supports one node and needs to check whether it is connected
             // NIGHT ELF does not require this function
-            await checkAElfBridgeConnected(aelfBridges.tDVV);
+            await checkAElfBridge(aelfBridges.tDVV);
             const tDVVReq = await aelfBridges.tDVV.chain.getBlockHeight();
-            await checkAElfBridgeConnected(aelfBridges.tDVW);
+            await checkAElfBridge(aelfBridges.tDVW);
             const tDVWReq = await aelfBridges.tDVW.chain.getBlockHeight();
             // aelf-bridge returns the result directly NIGHT ELF will return the result in the result
             setBlockHeight({

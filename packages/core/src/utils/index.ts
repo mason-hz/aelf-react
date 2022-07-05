@@ -1,6 +1,8 @@
-import type { AElfDappBridge } from '@aelf-react/types';
+import type { AElfDappBridge, PublicKey } from '@aelf-react/types';
+import { AElfReactProviderProps } from '../types';
+import { isMobileDevices } from './isMobile';
 const toStr = (x: string, y: string) => '04' + x?.padStart(64, '0') + y?.padStart(64, '0');
-const formatPubKey = (publicKey: any) => {
+const formatPubKey = (publicKey: PublicKey | string) => {
   try {
     const { x, y } = (typeof publicKey === 'object' ? publicKey : JSON.parse(publicKey)) || {};
     return toStr(x, y);
@@ -9,7 +11,7 @@ const formatPubKey = (publicKey: any) => {
   }
 };
 
-export const formatLoginInfo = (loginInfo: any) => {
+export const formatLoginInfo = (loginInfo: string) => {
   const detail = JSON.parse(loginInfo);
   const account = detail.address;
   const pubKey = formatPubKey(detail.publicKey);
@@ -27,4 +29,23 @@ export const getSignatureByBridge = async (aelfBridge: AElfDappBridge, account: 
     if (sign?.error) throw sign;
     return sign?.signature;
   }
+};
+
+export const getBridges = async (nodes: AElfReactProviderProps['nodes'], appName: string) => {
+  // @ts-ignore
+  const isAElfBridge = isMobileDevices() && !window?.NightElf;
+  const connector = (await (isAElfBridge ? import('./NightElf/AelfBridgeCheck') : import('./NightElf/NightElfCheck')))
+    .default;
+  // check connector
+  await connector.getInstance().check.then();
+
+  let firstKey = '';
+  const bridges: { [key: string]: AElfDappBridge } = {};
+  Object.entries(nodes).forEach(([k, v]) => {
+    if (!firstKey) firstKey = k;
+    bridges[k] = connector.initAelfInstanceByExtension(v.rpcUrl, appName);
+  });
+  const node = nodes[firstKey];
+  const bridge = bridges[firstKey];
+  return { bridge, node, bridges };
 };

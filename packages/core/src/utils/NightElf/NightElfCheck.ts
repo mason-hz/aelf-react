@@ -1,13 +1,15 @@
-let nightElfInstance = null;
+import { ErrorExtension } from './types';
+
+let nightElfInstance: NightElfCheck = null;
 let aelfInstanceByExtension = null;
 export default class NightElfCheck {
-  check: Promise<unknown>;
+  check: Promise<boolean | ErrorExtension>;
   constructor() {
     let resolveTemp = null;
     this.check = new Promise((resolve, reject) => {
       // @ts-ignore
       if (window.NightElf) {
-        console.log('There is nightelf');
+        console.log('There is NIGHT ELF');
         resolve(true);
       }
       setTimeout(() => {
