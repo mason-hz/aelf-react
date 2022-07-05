@@ -17,9 +17,7 @@ export async function reConnectAElfBridge(aelfBridge: AElfDappBridge) {
 
 // aelf-bridge only supports one node and needs to check whether it is connected
 export async function checkAElfBridge(aelfBridge: AElfDappBridge) {
-  const isBridge = isAElfBridge(aelfBridge);
-  const isCurrent = isCurrentAElfBridge(aelfBridge);
-  if (isBridge && !isCurrent) {
+  if (isAElfBridge(aelfBridge) && !isCurrentAElfBridge(aelfBridge)) {
     await reConnectAElfBridge(aelfBridge);
   }
 }

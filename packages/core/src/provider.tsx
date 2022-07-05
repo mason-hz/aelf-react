@@ -42,14 +42,7 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
       const nodes = activateNodes || providerNodes;
       if (!nodes) throw Error('activate must exist nodes');
       const { bridge, bridges, node } = await getBridges(nodes, appName);
-      const result = await bridge
-        .login({
-          chainId: node.chainId,
-          payload: {
-            method: 'LOGIN',
-          },
-        })
-        .then();
+      const result = await bridge.login({ chainId: node.chainId, payload: { method: 'LOGIN' } }).then();
       // login fail
       if (result.error) throw result;
 
