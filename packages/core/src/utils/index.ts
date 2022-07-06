@@ -37,7 +37,7 @@ export const getBridges = async (nodes: AElfReactProviderProps['nodes'], appName
   const connector = (await (isAElfBridge ? import('./NightElf/AelfBridgeCheck') : import('./NightElf/NightElfCheck')))
     .default;
   // check connector
-  await connector.getInstance().check.then();
+  await connector.getInstance().check();
 
   let firstKey = '';
   const bridges: { [key: string]: AElfDappBridge } = {};

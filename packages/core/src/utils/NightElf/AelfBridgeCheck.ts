@@ -6,29 +6,31 @@ let aelfInstanceByBridge = null;
 
 let accountInfo = null;
 export default class AelfBridgeCheck {
-  check: Promise<boolean | ErrorExtension>;
+  public check?: () => Promise<boolean | ErrorExtension>;
   constructor() {
-    this.check = new Promise((resolve, reject) => {
-      const bridgeInstance = new AElfBridge({
-        timeout: 3000,
-      });
-      bridgeInstance.connect().then((isConnected) => {
-        if (isConnected) {
-          resolve(true);
-        } else {
+    this.check = async () => {
+      return new Promise((resolve, reject) => {
+        const bridgeInstance = new AElfBridge({
+          timeout: 3000,
+        });
+        bridgeInstance.connect().then((isConnected) => {
+          if (isConnected) {
+            resolve(true);
+          } else {
+            reject({
+              error: 200001,
+              message: 'timeout, please use AELF Wallet APP or open the page in PC',
+            });
+          }
+        });
+        setTimeout(() => {
           reject({
             error: 200001,
             message: 'timeout, please use AELF Wallet APP or open the page in PC',
           });
-        }
+        }, 3000);
       });
-      setTimeout(() => {
-        reject({
-          error: 200001,
-          message: 'timeout, please use AELF Wallet APP or open the page in PC',
-        });
-      }, 3000);
-    });
+    };
   }
   static getInstance() {
     if (aelfBridgeInstance) return aelfBridgeInstance;

@@ -11,7 +11,7 @@ export function isCurrentAElfBridge(aelfBridge: AElfDappBridge) {
 
 export async function reConnectAElfBridge(aelfBridge: AElfDappBridge) {
   const isConnected = await aelfBridge.connect?.();
-  if (!isConnected) throw Error('Reconnects Fails');
+  if (!isConnected) throw Error('Reconnect Failed');
   endpoint = aelfBridge.options?.endpoint || '';
 }
 

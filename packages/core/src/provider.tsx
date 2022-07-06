@@ -42,19 +42,27 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
       const nodes = activateNodes || providerNodes;
       if (!nodes) throw Error('activate must exist nodes');
       const { bridge, bridges, node } = await getBridges(nodes, appName);
-      const result = await bridge.login({ chainId: node.chainId, payload: { method: 'LOGIN' } }).then();
+      const result = await bridge.login({ chainId: node.chainId, payload: { method: 'LOGIN' } });
       // login fail
       if (result.error) throw result;
 
+      // is aelf-bridge by wallet app
       if (isMobileDevices()) {
         await bridge.connect();
+        // is NightElf
       } else {
         await Promise.all(Object.values(bridges).map((i) => i.chain.getChainStatus()));
       }
-      const detail = formatLoginInfo(result.detail);
+
       dispatch({
         type: Actions.ACTIVATE,
-        payload: { ...detail, defaultAElfBridge: bridge, aelfBridges: bridges, isActive: true, nodes },
+        payload: {
+          ...formatLoginInfo(result.detail),
+          defaultAElfBridge: bridge,
+          aelfBridges: bridges,
+          isActive: true,
+          nodes,
+        },
       });
       return true;
     },
@@ -68,9 +76,10 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
     return true;
   }, [account, defaultAElfBridge]);
   const listener = useCallback(
-    (v: NightELFListener) => {
+    (result: NightELFListener) => {
       try {
-        if ((v.type === Listeners[0] && v.detail?.address === account) || v.type === Listeners[1])
+        const { type, detail } = result;
+        if ((type === Listeners[0] && detail.address === account) || type === Listeners[1])
           dispatch({ type: Actions.DEACTIVATE });
       } catch (error) {
         console.debug(error);
