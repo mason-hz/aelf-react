@@ -137,7 +137,7 @@ function Component() {
 
 ### Notice
 
-aelf-bridge only supports one node and needs to check whether it is connected, NIGHT ELF supports multiple. If your application needs to use aelf-bridge you can usually do this.
+aelf-bridge only supports one node and needs to check whether it is connected, NightElf supports multiple. If your application needs to use aelf-bridge you can usually do this.
 
 ```javascript
 export async function checkAElfBridge(aelfBridge: AElfDappBridge) {

@@ -42,12 +42,12 @@ function App() {
           if (!aelfBridges) return;
           try {
             // aelf-bridge only supports one node and needs to check whether it is connected
-            // NIGHT ELF does not require this function
+            // NightElf does not require this function
             await checkAElfBridge(aelfBridges.tDVV);
             const tDVVReq = await aelfBridges.tDVV.chain.getBlockHeight();
             await checkAElfBridge(aelfBridges.tDVW);
             const tDVWReq = await aelfBridges.tDVW.chain.getBlockHeight();
-            // aelf-bridge returns the result directly NIGHT ELF will return the result in the result
+            // aelf-bridge returns the result directly NightElf will return the result in the result
             setBlockHeight({
               tDVVBlockHeight: tDVVReq.result || tDVVReq,
               tDVWBlockHeight: tDVWReq.result || tDVWReq,

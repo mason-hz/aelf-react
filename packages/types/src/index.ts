@@ -164,7 +164,7 @@ export interface AElfDappBridge {
   connect?: (...args: unknown[]) => void;
 }
 
-// aelf-bridge returns the result directly NIGHT ELF will return the result in the result
+// aelf-bridge returns the result directly NightElf will return the result in the result
 export interface AElfChainMethods {
   /**
    * Get contract instance
