@@ -38,9 +38,11 @@ export interface AElfContextType extends AElfContextState {
    * The activate connection can optionally pass in a new node
    * @param nodes - @see AElfReactProviderProps.nodes
    */
-  activate: (nodes?: AElfReactProviderProps['nodes']) => Promise<true | any>;
+  activate: (nodes?: AElfReactProviderProps['nodes']) => Promise<true>;
   // deactivate connection
-  deactivate: () => Promise<true | any>;
+  deactivate: () => Promise<true>;
+  // try eagerly connection
+  connectEagerly: (nodes?: AElfReactProviderProps['nodes']) => Promise<true>;
 }
 ```
 

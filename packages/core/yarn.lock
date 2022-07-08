@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aelf-react/types@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@aelf-react/types/-/types-0.1.7.tgz#b0a11230b355e5fd221557de6136061989116763"
-  integrity sha512-dI1ApWalq3g2lM84GBOE+gHCVzcEj2Inx1LjZh71bZ+MS3bbmVsrRl139LYaGwjJZaiyBRyON8wRckUpNCcS5Q==
+"@aelf-react/types@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@aelf-react/types/-/types-0.1.8.tgz#a4bb6023a0dec59ae416a41155d6dda24abd506f"
+  integrity sha512-T6T96bHA0/fzVUeJbUOLHvB/W8mhqRqiAntDYeuqAOuZMZSFfE9+j7vEaakxfTset6B4Cr0nBt2kKuOQ2aJ7Eg==
 
 "@babel/runtime@^7.6.3":
   version "7.18.3"

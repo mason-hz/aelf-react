@@ -9,8 +9,8 @@ import {
   NightELFListener,
   ReducerAction,
 } from './types';
+import { getConnectEagerlyItem, setConnectEagerlyItem } from './utils/storage';
 const Listeners = ['nightElfRemoveKeyPairs', 'nightElfLockWallet'];
-
 const INITIAL_STATE = {
   isActive: false,
   account: undefined,
@@ -26,7 +26,12 @@ const AElfContext = createContext<AElfContextType | undefined>(undefined);
 function reducer(state: AElfContextState, { type, payload }: ReducerAction) {
   switch (type) {
     case Actions.DEACTIVATE: {
+      setConnectEagerlyItem(false);
       return Object.assign({}, state, INITIAL_STATE, payload);
+    }
+    case Actions.ACTIVATE: {
+      setConnectEagerlyItem(true);
+      return Object.assign({}, state, payload);
     }
     default: {
       return Object.assign({}, state, payload);
@@ -44,7 +49,7 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
       const { bridge, bridges, node } = await getBridges(nodes, appName);
       const result = await bridge.login({ chainId: node.chainId, payload: { method: 'LOGIN' } });
       // login fail
-      if (result.error) throw result;
+      if (result.error) throw result.errorMessage || result;
 
       // is aelf-bridge by wallet app
       if (isMobileDevices()) {
@@ -75,6 +80,14 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
     dispatch({ type: Actions.DEACTIVATE });
     return true;
   }, [account, defaultAElfBridge]);
+  const connectEagerly = useCallback(
+    async (activateNodes?: AElfReactProviderProps['nodes']) => {
+      const isConnectEagerly = getConnectEagerlyItem();
+      if (isConnectEagerly) return await activate(activateNodes);
+      throw Error('Can‘t Connect Eagerly');
+    },
+    [activate],
+  );
   const listener = useCallback(
     (result: NightELFListener) => {
       try {
@@ -98,8 +111,10 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
     };
   }, [listener]);
   return useMemo(
-    () => <AElfContext.Provider value={{ ...state, activate, deactivate }}>{children}</AElfContext.Provider>,
-    [state, activate, deactivate, children],
+    () => (
+      <AElfContext.Provider value={{ ...state, activate, deactivate, connectEagerly }}>{children}</AElfContext.Provider>
+    ),
+    [state, activate, deactivate, connectEagerly, children],
   );
 }
 
