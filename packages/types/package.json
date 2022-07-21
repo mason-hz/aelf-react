@@ -1,0 +1,38 @@
+{
+  "name": "@aelf-react/types",
+  "keywords": [
+    "aelf-react",
+    "react",
+    "react-hooks",
+    "hooks",
+    "aelf",
+    "javascript",
+    "typescript",
+    "web3",
+    "context",
+    "frontend",
+    "dapp"
+  ],
+  "author": "Mason Huang <mason.huang@aelf.io>",
+  "license": "MIT",
+  "repository": "github:mason-hz/aelf-react",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.1.8",
+  "files": [
+    "dist/*"
+  ],
+  "type": "commonjs",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "start": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/elliptic": "^6.4.14"
+  }
+}
