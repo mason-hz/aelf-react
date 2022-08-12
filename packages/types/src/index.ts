@@ -98,6 +98,14 @@ export type TransactionResult = {
   TransactionSize: number;
 };
 
+export type ExtensionInfo = {
+  detail: string;
+  error: number;
+  errorMessage: string & NightElfErrorMessage;
+  from: 'contentNightElf';
+  sid: string;
+};
+
 export type ChainMethodResult<T> = T & NightElfResult<T> & AElfSDKError;
 /**
  * More method references
@@ -130,6 +138,8 @@ export interface AElfDappBridge {
   getVersion: () => string;
   /** Get address */
   getAddress: (...args: unknown[]) => any;
+  /** Get extension info */
+  getExtensionInfo?: () => Promise<ExtensionInfo | undefined>;
   /** login */
   login: (
     options: LoginOptions,

@@ -30,12 +30,16 @@ export const getSignatureByBridge = async (aelfBridge: AElfDappBridge, account: 
     return sign?.signature;
   }
 };
-
-export const getBridges = async (nodes: AElfReactProviderProps['nodes'], appName: string) => {
+export const getConnector = async () => {
   // @ts-ignore
   const isAElfBridge = isMobileDevices() && !window?.NightElf;
   const connector = (await (isAElfBridge ? import('./NightElf/AelfBridgeCheck') : import('./NightElf/NightElfCheck')))
     .default;
+  return connector;
+};
+
+export const getBridges = async (nodes: AElfReactProviderProps['nodes'], appName: string) => {
+  const connector = await getConnector();
   // check connector
   await connector.getInstance().check();
 

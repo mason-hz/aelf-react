@@ -19,7 +19,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.1.13",
+  "version": "0.1.17",
   "files": [
     "dist/*"
   ],
@@ -33,7 +33,7 @@
     "start": "tsc --watch"
   },
   "dependencies": {
-    "@aelf-react/types": "^0.1.8",
+    "@aelf-react/types": "^0.1.9",
     "aelf-bridge": "^0.0.10"
   },
   "peerDependencies": {

@@ -1,5 +1,4 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
-import { isMobileDevices } from './utils/isMobile';
 import { formatLoginInfo, getBridges } from './utils';
 import {
   Actions,
@@ -52,11 +51,12 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
       if (result.error) throw result.errorMessage || result;
 
       // is aelf-bridge by wallet app
-      if (isMobileDevices()) {
+      if (bridge.connect) {
         await bridge.connect();
         // is NightElf
       } else {
-        await Promise.all(Object.values(bridges).map((i) => i.chain.getChainStatus()));
+        const status = await Promise.all(Object.values(bridges).map((i) => i.chain.getChainStatus()));
+        if (status.filter((i) => !!i.error).length) throw status;
       }
 
       dispatch({
@@ -67,6 +67,7 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
           aelfBridges: bridges,
           isActive: true,
           nodes,
+          chainId: node.chainId,
         },
       });
       return true;
@@ -82,11 +83,19 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
   }, [account, defaultAElfBridge]);
   const connectEagerly = useCallback(
     async (activateNodes?: AElfReactProviderProps['nodes']) => {
-      const isConnectEagerly = getConnectEagerlyItem();
+      const { bridge } = await getBridges(activateNodes, appName);
+      let isConnectEagerly: boolean;
+      if (bridge.getExtensionInfo) {
+        const extensionInfo = await bridge.getExtensionInfo();
+        if (extensionInfo && !extensionInfo.error && extensionInfo.detail) isConnectEagerly = true;
+      } else {
+        isConnectEagerly = getConnectEagerlyItem();
+      }
+
       if (isConnectEagerly) return await activate(activateNodes);
       throw Error('Can‘t Connect Eagerly');
     },
-    [activate],
+    [activate, appName],
   );
   const listener = useCallback(
     (result: NightELFListener) => {
