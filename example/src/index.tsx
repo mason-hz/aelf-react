@@ -43,13 +43,10 @@ function App() {
           try {
             // aelf-bridge only supports one node and needs to check whether it is connected
             // NightElf does not require this function
-            await checkAElfBridge(aelfBridges.tDVV);
-            const tDVVReq = await aelfBridges.tDVV.chain.getBlockHeight();
             await checkAElfBridge(aelfBridges.tDVW);
             const tDVWReq = await aelfBridges.tDVW.chain.getBlockHeight();
             // aelf-bridge returns the result directly NightElf will return the result in the result
             setBlockHeight({
-              tDVVBlockHeight: tDVVReq.result || tDVVReq,
               tDVWBlockHeight: tDVWReq.result || tDVWReq,
             });
           } catch (error) {
@@ -61,7 +58,7 @@ function App() {
       <button
         onClick={async () => {
           if (!defaultAElfBridge || !account) return;
-          const req = await defaultAElfBridge.chain.contractAt('JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE', {
+          const req = await defaultAElfBridge.chain.contractAt('ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx', {
             address: account,
           });
           setContract(req.result || req);
@@ -95,7 +92,6 @@ root.render(
     <AElfReactProvider
       appName="example"
       nodes={{
-        tDVV: { rpcUrl: 'https://tdvv-test-node.aelf.io', chainId: 'tDVV' },
         tDVW: { rpcUrl: 'https://tdvw-test-node.aelf.io', chainId: 'tDVW' },
       }}>
       <App />
