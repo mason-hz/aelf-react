@@ -6,7 +6,7 @@ import './index.css';
 import { checkAElfBridge } from './utils';
 
 function App() {
-  // defaultAElfBridge is the first node, which is tDVV
+  // defaultAElfBridge is the first node, which is tDVW
   const { account, activate, deactivate, pubKey, defaultAElfBridge, aelfBridges } = useAElfReact();
   const [blockHeight, setBlockHeight] = useState<any>();
   const [contract, setContract] = useState<any>();
