@@ -2,18 +2,18 @@
 # yarn lockfile v1
 
 
-"@aelf-react/core@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@aelf-react/core/-/core-0.1.8.tgz#eb67f9457da7fb7b7a092351be7abee6dfdb366b"
-  integrity sha512-qh5DT5waAinP6r5W3XSmQuGVUiSLm23+2LWTJeSvIRldGGLqmgl1oIFdkf8B8e0zaaXkUOkDTv4/OUC2l6vZyg==
+"@aelf-react/core@^0.1.19":
+  version "0.1.19"
+  resolved "https://registry.npmjs.org/@aelf-react/core/-/core-0.1.19.tgz#b2052c6c29acfc4abddaed316ab9cc5956420d4d"
+  integrity sha512-s329rJOfpNJkw9yRkKA4yqk9iLBn0d2tYZolVt82xwThdslGgvkjf2SUsqkfR4p5cqAMzX94Dm9UdBXVtktNCw==
   dependencies:
-    "@aelf-react/types" "^0.1.7"
+    "@aelf-react/types" "^0.1.10"
     aelf-bridge "^0.0.10"
 
-"@aelf-react/types@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@aelf-react/types/-/types-0.1.7.tgz#b0a11230b355e5fd221557de6136061989116763"
-  integrity sha512-dI1ApWalq3g2lM84GBOE+gHCVzcEj2Inx1LjZh71bZ+MS3bbmVsrRl139LYaGwjJZaiyBRyON8wRckUpNCcS5Q==
+"@aelf-react/types@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.npmjs.org/@aelf-react/types/-/types-0.1.10.tgz#dc8e426401140e138def17623f464ac22dc3489d"
+  integrity sha512-oKEI07EeL8dhUqp8ze50mCXOqAS5psoOpdmCNZaFT2R62/GPoAyvtN8oaZAUb1tycpE+eUdkdv8XDblEsIIiLA==
 
 "@aelfqueen/protobufjs@^6.8.9":
   version "6.8.9"

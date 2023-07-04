@@ -53,11 +53,11 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
       // is aelf-bridge by wallet app
       if (bridge.connect) {
         await bridge.connect();
-        // is NightElf
-      } else {
-        const status = await Promise.all(Object.values(bridges).map((i) => i.chain.getChainStatus()));
-        if (status.filter((i) => !!i.error).length) throw status;
       }
+      // else {
+      //   const status = await Promise.all(Object.values(bridges).map((i) => i.chain.getChainStatus()));
+      //   if (status.filter((i) => !!i.error).length) throw status;
+      // }
 
       dispatch({
         type: Actions.ACTIVATE,
@@ -70,7 +70,7 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
           chainId: node.chainId,
         },
       });
-      return true;
+      return bridges;
     },
     [appName, providerNodes],
   );
@@ -92,7 +92,7 @@ export function AElfReactProvider({ children, appName, nodes: providerNodes }: A
         isConnectEagerly = getConnectEagerlyItem();
       }
 
-      if (isConnectEagerly) return await activate(activateNodes);
+      if (isConnectEagerly) return activate(activateNodes);
       throw Error('Can‘t Connect Eagerly');
     },
     [activate, appName],

@@ -23,7 +23,7 @@
     ]
   },
   "devDependencies": {
-    "@aelf-react/core": "^0.1.8",
+    "@aelf-react/core": "^0.1.19",
     "aelf-sdk": "^3.2.40"
   }
 }

@@ -16,9 +16,6 @@ function App() {
     await deactivate();
     activate();
   }, [activate, deactivate]);
-  useEffect(() => {
-    activate();
-  }, [activate]);
   const childrenList = () => {
     const list = [];
     account && list.push(`account:${account}`);
